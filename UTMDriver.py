@@ -29,8 +29,11 @@ class UTMDriver():
         response = re.sub(r'(?<=\w):(?=\w[^<>]*>)(?!\w+=)', '', response)
         return ob.fromstring(response)
 
-    def _connect(self):
-        r = requests.get(self._url_out)
+    def _connect(self, d = None):
+        if not d == None:
+            r = requests.get(self._url_in)
+        else:
+            r = requests.get(self._url_out)
         return self._getData(r.text)
 
     def deleteDocument(self, url):
@@ -44,12 +47,12 @@ class UTMDriver():
     def _getType(self, doc):
         return re.split(r'/', doc.text)[-2]
 
-    #def getOutDocuments(self):
-    #    """Получить список исходящих документов и вернуть объект или исключение EmptyResponse"""
-    #    xml = self._connect()
-    #    if not hasattr(xml, 'url'):
-    #        raise EmptyResponce("Empty")
-    #    return xml
+    def getOutDocuments(self):
+        """Получить список исходящих документов и вернуть объект или исключение EmptyResponse"""
+        xml = self._connect(True)
+        if not hasattr(xml, 'url'):
+            raise EmptyResponce("Empty")
+        return xml
 
     def getInDocuments(self):
         """Получить список входящих документов и вернуть список кортежей или исключение EmptyResponse"""
