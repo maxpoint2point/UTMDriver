@@ -177,3 +177,31 @@ class UTMTicket:
         except ConnectionError:
             raise UTMNotConnect()
         return True
+
+
+class Rests:
+    def __init__(self):
+        pass
+
+
+class ReplyRests(Rests):
+    def __init__(self, url):
+        super().__init__()
+        self.url = url
+        doc = ob.fromstring(_get_raw(url))
+        self.date = datetime.datetime.strptime(doc.nsDocument.nsReplyRests.rstRestsDate.text, '%Y-%m-%dT%H:%M:%S.%f')
+        self.position = []
+        for position in doc.nsDocument.nsReplyRests.rstProducts.rstStockPosition:
+            self.position.append(position)
+
+    def delete(self):
+        try:
+            requests.delete(self.url)
+        except ConnectionError:
+            raise UTMNotConnect
+        return True
+
+
+class QueryRests(Rests):
+    def __init__(self):
+        super().__init__()
