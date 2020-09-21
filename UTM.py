@@ -41,20 +41,17 @@ class UTM:
 
     def __init__(self, address, port):
         self.base_url = 'http://' + address + ':' + str(port)
-        self.fsrar = self._get_fsrar()
         try:
             requests.get(self.base_url)
         except ConnectionError:
             raise UTMNotConnect('Could not connect to UTM')
-
-    def _get_raw(self, url):
-        return requests.get(self.base_url + '/' + url).text
-
-    def _get_fsrar(self):
         resp = self._get_raw('diagnosis')
         resp = resp.replace("""<?xml version="1.0" encoding="UTF-8" standalone="no"?>""", '')
         obj = ob.fromstring(resp)
-        return obj.CN
+        self.fsrar = obj.CN
+
+    def _get_raw(self, url):
+        return requests.get(self.base_url + '/' + url).text
 
     def getAll(self):
         xml_raw = self._get_raw(self.URL_IN)
@@ -87,23 +84,18 @@ class UTM:
             raise DocumentNotFound()
         return obj
 
-    """def getDocumentByReplyId(self, reply_id):
-        docs = self.getByReplyId(reply_id)
-        obj = []
-        for doc in docs:
-            obj.append(
-                UTMTicket(
-                    doc.url
-                )
-            )
-        return obj"""
-
-    def getTickets(self):
+    def getByType(self, doc_type):
         xml_raw = self._get_raw(self.URL_IN)
         obj = []
         for doc in ob.fromstring(_clean(xml_raw)).url:
-            if _get_type(doc) == 'Ticket':
-                obj.append(UTMTicket(doc))
+            if _get_type(doc) == doc_type:
+                obj.append(
+                    UTMDocumentIN(
+                        doc.text,
+                        doc.attrib.get('replyId', '00000000-0000-0000-0000-000000000000'),
+                        doc_type,
+                    )
+                )
         if not obj:
             raise EmptyResponse()
         return obj
@@ -118,6 +110,17 @@ class UTMDocumentIN:
 
     def __str__(self):
         return "{} {} {}".format(self.reply_id, self.type, self.url)
+
+    def detail(self):
+        if self.type == 'Ticket':
+            return UTMTicket(self.url)
+
+    def delete(self):
+        try:
+            requests.delete(self.url)
+        except ConnectionError:
+            raise UTMNotConnect
+        return True
 
 
 class UTMTicket:
@@ -168,9 +171,9 @@ class UTMTicket:
     def __bool__(self):
         return self.result
 
-    def UTMDelete(self):
+    def delete(self):
         try:
             requests.delete(self.url)
-            return True
         except ConnectionError:
             raise UTMNotConnect()
+        return True
