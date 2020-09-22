@@ -68,6 +68,15 @@ class UTM:
             raise EmptyResponse
         return obj
 
+    def deleteAll(self):
+        docs = self.getAll()
+        for doc in docs:
+            try:
+                requests.delete(doc.url)
+            except ConnectionError:
+                raise UTMNotConnect
+        return True
+
     def getByReplyId(self, replyId):
         xml_raw = self._get_raw(self.URL_IN)
         obj = []
@@ -102,6 +111,9 @@ class UTM:
 
 
 class UTMDocumentIN:
+    """
+    Входящие документы в УТМ
+    """
 
     def __init__(self, url, reply_id, doc_type):
         self.url = url
@@ -124,6 +136,10 @@ class UTMDocumentIN:
 
 
 class UTMTicket:
+    """
+    Тикеты
+    """
+
     def __init__(self, url):
         ticket = ob.fromstring(_get_raw(url))
         date_str = ticket.nsDocument.nsTicket.tcTicketDate.text
@@ -179,6 +195,12 @@ class UTMTicket:
         return True
 
 
+class Position:
+    def __init__(self, **kwargs):
+        for k, v in kwargs.items():
+            setattr(self, k, v)
+
+
 class Rests:
     def __init__(self):
         pass
@@ -191,8 +213,27 @@ class ReplyRests(Rests):
         doc = ob.fromstring(_get_raw(url))
         self.date = datetime.datetime.strptime(doc.nsDocument.nsReplyRests.rstRestsDate.text, '%Y-%m-%dT%H:%M:%S.%f')
         self.position = []
-        for position in doc.nsDocument.nsReplyRests.rstProducts.rstStockPosition:
-            self.position.append(position)
+        for line in doc.nsDocument.nsReplyRests.rstProducts.rstStockPosition:
+            self.position.append(
+                Position(
+                    Quantity=line.rstQuantity.text,
+                    InformARegId=line.rstInformARegId.text,
+                    InformBRegId=line.rstInformBRegId.text,
+                    FullName=line.rstProduct.prefFullName.text,
+                    AlcCode=line.rstProduct.prefAlcCode.text,
+                    Capacity=float(line.rstProduct.prefCapacity.text),
+                    AlcVolume=float(line.rstProduct.prefAlcVolume.text),
+                    VCode=line.rstProduct.prefProductVCode.text,
+                    ProducerClientRegId=line.rstProduct.prefProducer.orefClientRegId.text,
+                    ProducerINN=line.rstProduct.prefProducer.orefINN.text,
+                    ProducerKPP=line.rstProduct.prefProducer.orefKPP.text,
+                    ProducerFullName=line.rstProduct.prefProducer.orefFullName.text,
+                    ProducerShortName=line.rstProduct.prefProducer.orefShortName.text,
+                    addressCountry=line.rstProduct.prefProducer.orefaddress.orefCountry.text,
+                    addressRegionCode=line.rstProduct.prefProducer.orefaddress.orefRegionCode.text,
+                    addressdescription=line.rstProduct.prefProducer.orefaddress.orefdescription.text,
+                )
+            )
 
     def delete(self):
         try:
@@ -205,3 +246,49 @@ class ReplyRests(Rests):
 class QueryRests(Rests):
     def __init__(self):
         super().__init__()
+
+    def send(self, **kwargs):
+        pass
+
+
+class NaTTNPosition:
+    def __init__(self, **kwargs):
+        self.WbRegID = kwargs['WbRegID']
+        self.ttnNumber = kwargs['ttnNumber']
+        self.Date = kwargs['Date']
+        self.Shipper = kwargs['Shipper']
+
+    def __str__(self):
+        return "{} ({})".format(self.WbRegID, self.Date)
+
+
+class NaTTN:
+    def __init__(self, ):
+        pass
+
+
+class ReplyNaTTN(NaTTN):
+    def __init__(self, url):
+        super().__init__()
+        self.url = url
+        self.NoAnswerTTN = []
+        doc = ob.fromstring(_get_raw(url))
+        self.reply_date = datetime.datetime.strptime(
+            doc.nsDocument.nsReplyNoAnswerTTN.ttnReplyDate.text,
+            '%Y-%m-%dT%H:%M:%S.%f'
+        )
+        for nattn in doc.nsDocument.nsReplyNoAnswerTTN.ttnttnlist.ttnNoAnswer:
+            self.NoAnswerTTN.append(
+                NaTTNPosition(
+                    WbRegID=nattn.ttnWbRegID.text,
+                    ttnNumber=nattn.ttnttnNumber.text,
+                    Date=datetime.datetime.strptime(nattn.ttnttnDate.text, '%Y-%m-%d'),
+                    Shipper=nattn.ttnShipper.text,
+                )
+            )
+
+    def delete(self):
+        try:
+            requests.delete(self.url)
+        except ConnectionError:
+            raise UTMNotConnect
