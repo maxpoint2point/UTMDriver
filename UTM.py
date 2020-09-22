@@ -1,6 +1,7 @@
 import datetime
 import re
 import requests
+import abstract
 
 from lxml import objectify as ob
 
@@ -135,12 +136,13 @@ class UTMDocumentIN:
         return True
 
 
-class UTMTicket:
+class UTMTicket(abstract.Ticket):
     """
     Тикеты
     """
 
     def __init__(self, url):
+        super().__init__()
         ticket = ob.fromstring(_get_raw(url))
         date_str = ticket.nsDocument.nsTicket.tcTicketDate.text
         if len(date_str) > 26:
@@ -195,18 +197,26 @@ class UTMTicket:
         return True
 
 
-class Position:
+class RestPosition(abstract.Position):
     def __init__(self, **kwargs):
+        super().__init__()
         for k, v in kwargs.items():
             setattr(self, k, v)
 
 
-class Rests:
-    def __init__(self):
-        pass
+class NaTTNPosition(abstract.Position):
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.WbRegID = kwargs['WbRegID']
+        self.ttnNumber = kwargs['ttnNumber']
+        self.Date = kwargs['Date']
+        self.Shipper = kwargs['Shipper']
+
+    def __str__(self):
+        return "{} ({})".format(self.WbRegID, self.Date)
 
 
-class ReplyRests(Rests):
+class ReplyRests(abstract.Rests):
     def __init__(self, url):
         super().__init__()
         self.url = url
@@ -215,7 +225,7 @@ class ReplyRests(Rests):
         self.position = []
         for line in doc.nsDocument.nsReplyRests.rstProducts.rstStockPosition:
             self.position.append(
-                Position(
+                RestPosition(
                     Quantity=line.rstQuantity.text,
                     InformARegId=line.rstInformARegId.text,
                     InformBRegId=line.rstInformBRegId.text,
@@ -243,7 +253,7 @@ class ReplyRests(Rests):
         return True
 
 
-class QueryRests(Rests):
+class QueryRests(abstract.Rests):
     def __init__(self):
         super().__init__()
 
@@ -251,23 +261,7 @@ class QueryRests(Rests):
         pass
 
 
-class NaTTNPosition:
-    def __init__(self, **kwargs):
-        self.WbRegID = kwargs['WbRegID']
-        self.ttnNumber = kwargs['ttnNumber']
-        self.Date = kwargs['Date']
-        self.Shipper = kwargs['Shipper']
-
-    def __str__(self):
-        return "{} ({})".format(self.WbRegID, self.Date)
-
-
-class NaTTN:
-    def __init__(self, ):
-        pass
-
-
-class ReplyNaTTN(NaTTN):
+class ReplyNaTTN(abstract.NaTTN):
     def __init__(self, url):
         super().__init__()
         self.url = url
