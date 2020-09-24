@@ -2,3 +2,5 @@
 /.idea
 main.py
 /__pycache__
+/.none
+*__pycache__
