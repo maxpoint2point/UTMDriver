@@ -24,7 +24,7 @@ class UTMTicket(Ticket):
         self.doc_url = doc_url
 
     def __str__(self):
-        return f"{self.ConclusionDate}, {self.Conclusion}, ({self.TransportId})"
+        return f"{self.Conclusion}, {self.ConclusionDate}, ({self.TransportId})"
 
     def __bool__(self):
         if self.Conclusion == "Accepted":
