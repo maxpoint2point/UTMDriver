@@ -1,5 +1,6 @@
 from documents.tickets.Ticket import *
 import datetime
+from generic import UtmRequest
 
 
 class UTMTicket(Ticket):
@@ -33,4 +34,5 @@ class UTMTicket(Ticket):
             return False
 
     def delete(self):
-        pass
+        UtmRequest.delete(self.doc_url)
+        return True

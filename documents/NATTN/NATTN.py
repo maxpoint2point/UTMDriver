@@ -1,8 +1,8 @@
 import datetime
 
 from generic.positions import Position
-from generic.exceptions import UTMNotConnect
 from generic.textTransform import clean
+from generic import UtmRequest
 
 
 class ReplyNATTN:
@@ -28,7 +28,8 @@ class ReplyNATTN:
             )
 
     def delete(self):
-        pass
+        UtmRequest.delete(self.doc_url)
+        return True
 
 
 class QueryNATTN:
@@ -36,7 +37,6 @@ class QueryNATTN:
     Запрос списка не принятых накладных
     """
     def __init__(self, connector):
-        import requests
         from lxml import objectify as ob
         full_url = f"{connector.base_url}/opt/in/QueryNATTN"
         query = {
@@ -46,12 +46,7 @@ class QueryNATTN:
                 'application/xml'
             )
         }
-        try:
-            r = requests.post(full_url, files=query)
-        except ConnectionError:
-            raise UTMNotConnect
-        if not r.ok:
-            raise UTMNotConnect
+        r = UtmRequest.post(full_url, query)
         xml = ob.fromstring(clean(r))
 
         self.replyId = xml.url.text

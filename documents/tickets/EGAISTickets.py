@@ -1,5 +1,6 @@
 from documents.tickets.Ticket import *
 import datetime
+from generic import UtmRequest
 
 
 class EGAISTicket(Ticket):
@@ -34,4 +35,5 @@ class EGAISTicket(Ticket):
             return False
 
     def delete(self):
-        pass
+        UtmRequest.delete(self.doc_url)
+        return True

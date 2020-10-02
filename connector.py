@@ -4,18 +4,12 @@ from documents.tickets import EGAISTickets, UTMTickets
 from documents.rests import storeRest, shopRest
 from documents.NATTN import NATTN
 from generic.textTransform import *
-
-import requests
+from generic import UtmRequest
 
 
 class Connector:
     def __init__(self, address, port):
-        try:
-            self.__response = requests.get(f"http://{address}:{str(port)}/diagnosis")
-            if self.__response.status_code != 200:
-                raise UTMNotConnect
-        except ConnectionError:
-            raise UTMNotConnect
+        self.__response = UtmRequest.get(f"http://{address}:{str(port)}/diagnosis")
         self.base_url = f"http://{address}:{str(port)}"
         self.FSRAR = self.__getFSRAR(f"http://{address}:{str(port)}/diagnosis")
         self.status = self.__response.status_code
@@ -29,14 +23,7 @@ class Connector:
 
     @staticmethod
     def __getXmlData(full_url):
-        try:
-            raw = requests.get(full_url)
-            if raw.status_code == 404:
-                raise DocumentNotFound
-            if raw.status_code != 200:
-                raise UTMNotConnect
-        except requests.exceptions.ConnectionError:
-            raise UTMNotConnect
+        raw = UtmRequest.get(full_url)
         raw = clean(raw)
         xml = ob.fromstring(raw)
         return xml
@@ -80,6 +67,8 @@ class Connector:
     def getByType(self, doc_type):
         full_url = f"{self.base_url}/opt/out/{doc_type}"
         xml_data = self.__getXmlData(full_url)
+        if not hasattr(xml_data, 'url'):
+            raise EmptyResponse
         obj = []
         for doc in xml_data.url:
             d = self.__getXmlData(doc)
