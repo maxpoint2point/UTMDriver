@@ -4,7 +4,7 @@ import datetime
 
 
 class StoreRest(Rest):
-    def __init__(self, connector, xml_data):
+    def __init__(self, connector, xml_data, doc_url):
         self.RestDate = datetime.datetime.strptime(
             xml_data.nsDocument.nsReplyRests.rstRestsDate.text,
             "%Y-%m-%dT%H:%M:%S.%f"
@@ -22,16 +22,17 @@ class StoreRest(Rest):
                     ProductAlcVolume=good.rstProduct.prefAlcVolume.text,
                     ProductVCode=good.rstProduct.prefProductVCode.text,
                     ProducerClientRegId=good.rstProduct.prefProducer.orefClientRegId.text,
-                    ProducerINN=good.rstProduct.prefProducer.orefProducerINN.text,
-                    ProducerKPP=good.rstProduct.prefProducer.orefProducerKPP.text,
-                    ProducerFullName=good.rstProduct.prefProducer.orefProducerFullName.text,
-                    ProducerShortName=good.rstProduct.prefProducer.orefProducerShortName.text,
+                    ProducerINN=good.rstProduct.prefProducer.orefINN.text,
+                    ProducerKPP=good.rstProduct.prefProducer.orefKPP.text,
+                    ProducerFullName=good.rstProduct.prefProducer.orefFullName.text,
+                    ProducerShortName=good.rstProduct.prefProducer.orefShortName.text,
                     addressCountry=good.rstProduct.prefProducer.orefaddress.orefCountry.text,
                     addressRegionCode=good.rstProduct.prefProducer.orefaddress.orefRegionCode.text,
-                    addressDescription=good.rstProduct.prefProducer.orefaddress.orefDescription.text,
+                    addressDescription=good.rstProduct.prefProducer.orefaddress.orefdescription.text,
                 )
             )
         self.connector = connector
+        self.doc_url = doc_url
 
     def delete(self):
         pass
@@ -40,4 +41,4 @@ class StoreRest(Rest):
         pass
 
     def __str__(self):
-        return f"{self.RestDate}, {self.connector.url}"
+        return f"{self.RestDate}, {self.doc_url}"
