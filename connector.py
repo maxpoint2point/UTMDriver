@@ -3,9 +3,9 @@ from lxml import objectify as ob
 from documents.tickets import EGAISTickets, UTMTickets
 from documents.rests import storeRest, shopRest
 from documents.NATTN import NATTN
+from generic.textTransform import *
 
 import requests
-import re
 
 
 class Connector:
@@ -28,10 +28,6 @@ class Connector:
         return xml.CN.text
 
     @staticmethod
-    def __getType(full_url):
-        return re.split(r'/', full_url)[-2]
-
-    @staticmethod
     def __getXmlData(full_url):
         try:
             raw = requests.get(full_url)
@@ -41,11 +37,7 @@ class Connector:
                 raise UTMNotConnect
         except requests.exceptions.ConnectionError:
             raise UTMNotConnect
-        raw = raw.text.replace("""<?xml version="1.0" encoding="UTF-8" standalone="no"?>""", '')
-        raw = raw.replace("""<?xml version="1.0" encoding="utf-8" standalone="no"?>""", '')
-        raw = raw.replace("""<?xml version="1.0" encoding="utf-8"?>""", '')
-        raw = raw.replace("""<?xml version="1.0" encoding="UTF-8"?>""", '')
-        raw = re.sub(r'(?<=\w):(?=\w[^<>]*>)(?!\w+=)', '', raw)
+        raw = clean(raw)
         xml = ob.fromstring(raw)
         return xml
 
@@ -69,7 +61,7 @@ class Connector:
         else:
             full_url = f"{self.base_url}/opt/out/{url}"
         xml_data = self.__getXmlData(full_url)
-        doc_type = self.__getType(full_url)
+        doc_type = getType(full_url)
         return self.__returnObj(xml_data, doc_type, full_url)
 
     def getByReplyId(self, replyId):
@@ -81,11 +73,11 @@ class Connector:
         for doc in xml_data.url:
             d = self.__getXmlData(doc)
             obj.append(
-                self.__returnObj(d, self.__getType(doc.text), doc)
+                self.__returnObj(d, getType(doc.text), doc)
             )
         return obj
 
-    def getByDocumentType(self, doc_type):
+    def getByType(self, doc_type):
         full_url = f"{self.base_url}/opt/out/{doc_type}"
         xml_data = self.__getXmlData(full_url)
         obj = []
