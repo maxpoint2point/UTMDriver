@@ -16,10 +16,13 @@ class Certificate:
         self.certType = kwargs['cert']
 
     def __bool__(self):
-        if self.ValidityTo > datetime.datetime.today():
+        if self.ValidityTo >= datetime.datetime.today():
             return True
         else:
             return False
+
+    def __str__(self):
+        return f"<Certificate [{self.certType}]> ({self.CN})"
 
     @property
     def isValid(self):

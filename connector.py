@@ -1,6 +1,8 @@
+import html
 from generic.exceptions import EmptyResponse
 from generic.textTransform import getType, clean
 from generic import UtmRequest
+from documents import certificate
 
 
 class Connector:
@@ -43,6 +45,9 @@ class Connector:
         if doc_type == 'ReplyNATTN':
             from documents.NATTN import NATTN
             return NATTN.ReplyNATTN(self, xml_data, full_url)
+        if doc_type == 'WayBill_v3':
+            from documents.waybill import waybill_v3
+            return waybill_v3.WayBill_v3(self, xml_data, full_url)
 
     def getInByUrl(self, url):
         if url[0:7] == "http://":
@@ -101,10 +106,9 @@ class Connector:
         )
         return d
 
-    def getCert(self, cert_type):
-        import html
-
-        full_url = f"{self.base_url}/info/certificate/{cert_type}"
+    @property
+    def gost_cert(self):
+        full_url = f"{self.base_url}/info/certificate/GOST"
         r = UtmRequest.get(full_url)
         r = html.unescape(r.text)
         cert = []
@@ -117,25 +121,38 @@ class Connector:
                 cert.append(line[19:-1])
             if 'To:' in line:
                 cert.append(line[19:-1])
-        from generic import certificate
-        if cert_type == 'GOST':
-            return certificate.Certificate(
-                cert=cert_type,
-                cn=cert[0],
-                surname=cert[1],
-                givenname=cert[2],
-                c=cert[3],
-                st=cert[4],
-                l=cert[5],
-                street=cert[6],
-                emailaddress=cert[9],
-                valid_from=cert[11],
-                valid_to=cert[12]
-            )
-        if cert_type == 'RSA':
-            return certificate.Certificate(
-                cert=cert_type,
-                cn=cert[1],
-                valid_from=cert[7],
-                valid_to=cert[8]
-            )
+        return certificate.Certificate(
+            cert='GOST',
+            cn=cert[0],
+            surname=cert[1],
+            givenname=cert[2],
+            c=cert[3],
+            st=cert[4],
+            l=cert[5],
+            street=cert[6],
+            emailaddress=cert[9],
+            valid_from=cert[11],
+            valid_to=cert[12]
+        )
+
+    @property
+    def rsa_cert(self):
+        full_url = f"{self.base_url}/info/certificate/RSA"
+        r = UtmRequest.get(full_url)
+        r = html.unescape(r.text)
+        cert = []
+        for line in r.split('\n'):
+            if 'Subject:' in line:
+                string = line[11:].split(", ")
+                for s in string:
+                    cert.append(s.split("=")[1])
+            if 'Validity:' in line:
+                cert.append(line[19:-1])
+            if 'To:' in line:
+                cert.append(line[19:-1])
+        return certificate.Certificate(
+            cert='RSA',
+            cn=cert[1],
+            valid_from=cert[7],
+            valid_to=cert[8]
+        )
