@@ -5,6 +5,7 @@ from generic.positions import Position
 
 class WayBill_v3(waybill.WayBill):
     def __init__(self, connector, xml_data, doc_url):
+        self.Position = []
         self.connector = connector
         self.doc_url = doc_url
         self.Identity = xml_data.nsDocument.nsWayBill_v3.wbIdentity.text

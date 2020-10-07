@@ -6,6 +6,7 @@ from generic import UtmRequest
 
 class ShopRest(Rest):
     def __init__(self, connector, xml_data, doc_url):
+        self.Position = []
         self.RestDate = datetime.datetime.strptime(
             xml_data.nsDocument.nsReplyRestsShop_v2.rstRestsDate.text,
             "%Y-%m-%dT%H:%M:%S.%f"
@@ -37,7 +38,7 @@ class ShopRest(Rest):
                     ProductAlcCode=good.rstProduct.prefAlcCode.text,
                     ProductCapacity=float(getattr(good.rstProduct, 'prefCapacity', 0)),
                     ProductUnitType=good.rstProduct.prefUnitType.text,
-                    ProductAlcVolume=good.rstProduct.prefAlcVolume.text,
+                    ProductAlcVolume=float(good.rstProduct.prefAlcVolume),
                     ProductVCode=good.rstProduct.prefProductVCode.text,
                     ProducerClientRegId=producerClientRegId,
                     ProducerINN=producerINN,

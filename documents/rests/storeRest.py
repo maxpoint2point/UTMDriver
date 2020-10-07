@@ -6,6 +6,7 @@ from generic import UtmRequest
 
 class StoreRest(Rest):
     def __init__(self, connector, xml_data, doc_url):
+        self.Position = []
         self.RestDate = datetime.datetime.strptime(
             xml_data.nsDocument.nsReplyRests.rstRestsDate.text,
             "%Y-%m-%dT%H:%M:%S.%f"
