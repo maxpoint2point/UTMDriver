@@ -1,4 +1,4 @@
-from documents.rests.rest import *
+from generic.documents.rests.rest import Rest
 from generic.positions import Position
 import datetime
 from generic import UtmRequest

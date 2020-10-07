@@ -1,4 +1,4 @@
-from documents.waybill import waybill
+from generic.documents.waybill import waybill
 import datetime
 from generic.positions import Position
 

@@ -1,4 +1,3 @@
-from documents.tickets.Ticket import *
 import datetime
 from generic import UtmRequest
 

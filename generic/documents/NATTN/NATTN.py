@@ -1,6 +1,6 @@
 import datetime
 
-from documents.NATTN.Position import NATTNPosition
+from generic.documents.NATTN.Position import NATTNPosition
 from generic import UtmRequest
 
 

@@ -1,4 +1,4 @@
-from documents.rests.rest import *
+from generic.documents.rests.rest import Rest
 from generic.positions import Position
 import datetime
 from generic import UtmRequest
@@ -35,6 +35,9 @@ class StoreRest(Rest):
             )
         self.connector = connector
         self.doc_url = doc_url
+
+    def sendToShop(self):
+        pass
 
     def delete(self):
         UtmRequest.delete(self.doc_url)
