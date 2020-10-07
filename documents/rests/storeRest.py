@@ -21,7 +21,7 @@ class StoreRest(Rest):
                     ProductFullName=good.rstProduct.prefFullName.text,
                     ProductAlcCode=good.rstProduct.prefAlcCode.text,
                     ProductCapacity=float(getattr(good.rstProduct, 'prefCapacity', 0)),
-                    ProductAlcVolume=good.rstProduct.prefAlcVolume.text,
+                    ProductAlcVolume=float(good.rstProduct.prefAlcVolume),
                     ProductVCode=good.rstProduct.prefProductVCode.text,
                     ProducerClientRegId=good.rstProduct.prefProducer.orefClientRegId.text,
                     ProducerINN=good.rstProduct.prefProducer.orefINN.text,
