@@ -1,13 +1,15 @@
 import html
 from generic.exceptions import EmptyResponse
-from generic.textTransform import getType, clean
-from generic import UtmRequest
+from generic.helpers.textTransform import getType, clean
+from generic.queries.utm import requests
 from generic.documents import certificate
+from generic.queries.documents import DocRequest
 
 
 class Connector:
     def __init__(self, address, port):
-        self.__response = UtmRequest.get(f"http://{address}:{str(port)}/diagnosis")
+        requests.get(f"http://{address}:{str(port)}/")
+        self.__response = requests.get(f"http://{address}:{str(port)}/diagnosis")
         self.base_url = f"http://{address}:{str(port)}"
         self.FSRAR = self.__getFSRAR(f"http://{address}:{str(port)}/diagnosis")
         self.status = self.__response.status_code
@@ -22,7 +24,7 @@ class Connector:
     @staticmethod
     def __getXmlData(full_url):
         from lxml import objectify as ob
-        raw = UtmRequest.get(full_url)
+        raw = requests.get(full_url)
         raw = clean(raw)
         xml = ob.fromstring(raw)
         return xml
@@ -106,7 +108,7 @@ class Connector:
     @property
     def version(self):
         full_url = f"{self.base_url}/info/version"
-        v = UtmRequest.get(full_url)
+        v = requests.get(full_url)
         return v.text
 
     @property
@@ -114,7 +116,7 @@ class Connector:
         import datetime
         full_url = f"{self.base_url}/info/dbtime"
         d = datetime.datetime.strptime(
-            UtmRequest.get(full_url).text,
+            requests.get(full_url).text,
             "%Y-%m-%d %H:%M:%S.%f"
         )
         return d
@@ -122,7 +124,7 @@ class Connector:
     @property
     def gost_cert(self):
         full_url = f"{self.base_url}/info/certificate/GOST"
-        r = UtmRequest.get(full_url)
+        r = requests.get(full_url)
         r = html.unescape(r.text)
         cert = []
         for line in r.split('\n'):
@@ -151,7 +153,7 @@ class Connector:
     @property
     def rsa_cert(self):
         full_url = f"{self.base_url}/info/certificate/RSA"
-        r = UtmRequest.get(full_url)
+        r = requests.get(full_url)
         r = html.unescape(r.text)
         cert = []
         for line in r.split('\n'):
@@ -169,3 +171,6 @@ class Connector:
             valid_from=cert[7],
             valid_to=cert[8]
         )
+
+    def request_document(self, doc_type, **kwargs):
+        return DocRequest.Request(self, doc_type, **kwargs)
