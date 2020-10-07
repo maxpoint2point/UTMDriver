@@ -19,7 +19,7 @@ class StoreRest(Rest):
                     StockPositionInformBRegId=good.rstInformBRegId.text,
                     ProductFullName=good.rstProduct.prefFullName.text,
                     ProductAlcCode=good.rstProduct.prefAlcCode.text,
-                    ProductCapacity=good.rstProduct.prefCapacity.text,
+                    ProductCapacity=float(getattr(good.rstProduct, 'prefCapacity', 0)),
                     ProductAlcVolume=good.rstProduct.prefAlcVolume.text,
                     ProductVCode=good.rstProduct.prefProductVCode.text,
                     ProducerClientRegId=good.rstProduct.prefProducer.orefClientRegId.text,
@@ -43,4 +43,4 @@ class StoreRest(Rest):
         pass
 
     def __str__(self):
-        return f"{self.RestDate}, {self.doc_url}"
+        return f"<{self.RestDate}, [{self.doc_url}]>"
