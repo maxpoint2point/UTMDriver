@@ -11,3 +11,15 @@ class EmptyResponse(Exception):
 class DocumentNotFound(Exception):
     """Документ не найден в УТМ"""
     pass
+
+
+class UnsupportedDocument(Exception):
+    pass
+
+
+class MissingArgument(Exception):
+    pass
+
+
+class TypeMismatch(Exception):
+    pass

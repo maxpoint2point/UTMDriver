@@ -1,7 +1,7 @@
 from generic.documents.rests.rest import Rest
-from generic.positions import Position
+from generic.helpers.positions import Position
 import datetime
-from generic import UtmRequest
+from generic.queries.utm import requests
 
 
 class ShopRest(Rest):
@@ -57,7 +57,7 @@ class ShopRest(Rest):
         pass
 
     def delete(self):
-        UtmRequest.delete(self.doc_url)
+        requests.delete(self.doc_url)
         return True
 
     def __str__(self):

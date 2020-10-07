@@ -1,6 +1,6 @@
 from generic.documents.waybill import waybill
 import datetime
-from generic.positions import Position
+from generic.helpers.positions import Position
 
 
 class WayBill_v3(waybill.WayBill):

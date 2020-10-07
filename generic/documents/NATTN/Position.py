@@ -1,5 +1,5 @@
-from generic.positions import Position
-from generic.DocRequest import Request
+from generic.helpers.positions import Position
+from generic.queries.documents.DocRequest import Request
 
 
 class NATTNPosition(Position):

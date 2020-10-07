@@ -1,7 +1,7 @@
 import datetime
 
 from generic.documents.NATTN.Position import NATTNPosition
-from generic import UtmRequest
+from generic.queries.utm import requests
 
 
 class ReplyNATTN:
@@ -28,7 +28,7 @@ class ReplyNATTN:
             )
 
     def delete(self):
-        UtmRequest.delete(self.doc_url)
+        requests.delete(self.doc_url)
         return True
 
     def __str__(self):
