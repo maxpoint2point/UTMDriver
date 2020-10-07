@@ -84,6 +84,19 @@ class Connector:
             )
         return obj
 
+    def getAll(self):
+        full_url = f"{self.base_url}/opt/out"
+        xml_data = self.__getXmlData(full_url)
+        if not hasattr(xml_data, 'url'):
+            raise EmptyResponse
+        obj = []
+        for doc in xml_data.url:
+            d = self.__getXmlData(doc)
+            obj.append(
+                self.__returnObj(d, getType(doc.text), doc)
+            )
+        return obj
+
     @property
     def total(self):
         full_url = f"{self.base_url}/opt/out/total"
