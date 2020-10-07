@@ -8,27 +8,45 @@ class ShopRest(Rest):
     def __init__(self, connector, xml_data, doc_url):
         self.RestDate = datetime.datetime.strptime(
             xml_data.nsDocument.nsReplyRestsShop_v2.rstRestsDate.text,
-            "%Y-%m-%dT%H:%M:%S"
+            "%Y-%m-%dT%H:%M:%S.%f"
         )
         for good in xml_data.nsDocument.nsReplyRestsShop_v2.rstProducts.rstShopPosition:
+            if not hasattr(good.rstProduct.prefProducer, 'orefUL'):
+                producerClientRegId = good.rstProduct.prefProducer.orefFO.orefClientRegId.text
+                producerINN = None
+                producerKPP = None
+                producerFullName = good.rstProduct.prefProducer.orefFO.orefFullName.text
+                producerShortName = good.rstProduct.prefProducer.orefFO.orefShortName.text
+                addressCountry = good.rstProduct.prefProducer.orefFO.orefaddress.orefCountry.text
+                addressRegionCode = None
+                addressdescription = good.rstProduct.prefProducer.orefFO.orefaddress.orefdescription.text
+            else:
+                producerClientRegId = good.rstProduct.prefProducer.orefUL.orefClientRegId.text
+                producerINN = good.rstProduct.prefProducer.orefUL.orefINN.text
+                producerKPP = good.rstProduct.prefProducer.orefUL.orefKPP.text
+                producerFullName = good.rstProduct.prefProducer.orefUL.orefFullName.text
+                producerShortName = good.rstProduct.prefProducer.orefUL.orefShortName.text
+                addressCountry = good.rstProduct.prefProducer.orefUL.orefaddress.orefCountry.text
+                addressRegionCode = good.rstProduct.prefProducer.orefUL.orefaddress.orefRegionCode.text
+                addressdescription = good.rstProduct.prefProducer.orefUL.orefaddress.orefdescription.text
             self.Position.append(
                 Position(
                     'ShopRests_v2',
-                    ShopPositionQuantity=good.rstQuantity,
-                    ProductFullName=good.rstProduct.prefFullName,
-                    ProductAlcCode=good.rstProduct.prefAlcCode,
-                    ProductCapacity=good.rstProduct.prefCapacity,
-                    ProductUnitType=good.rstProduct.prefUnitType,
-                    ProductAlcVolume=good.rstProduct.prefAlcVolume,
-                    ProductVCode=good.rstProduct.prefProductVCode,
-                    ProducerClientRegId=good.rstProduct.prefProducer.orefUL.orefClientRegId,
-                    ProducerINN=good.rstProduct.prefProducer.orefUL.orefINN,
-                    ProducerKPP=good.rstProduct.prefProducer.orefUL.orefKPP,
-                    ProducerFullName=good.rstProduct.prefProducer.orefUL.orefFullName,
-                    ProducerShortName=good.rstProduct.prefProducer.orefUL.orefShortName,
-                    addressCountry=good.rstProduct.prefProducer.orefUL.orefaddress.orefCountry,
-                    addressRegionCode=good.rstProduct.prefProducer.orefUL.orefaddress.orefRegionCode,
-                    addressdescription=good.rstProduct.prefProducer.orefUL.orefaddress.orefdescription,
+                    ShopPositionQuantity=good.rstQuantity.text,
+                    ProductFullName=good.rstProduct.prefFullName.text,
+                    ProductAlcCode=good.rstProduct.prefAlcCode.text,
+                    ProductCapacity=float(getattr(good.rstProduct, 'prefCapacity', 0)),
+                    ProductUnitType=good.rstProduct.prefUnitType.text,
+                    ProductAlcVolume=good.rstProduct.prefAlcVolume.text,
+                    ProductVCode=good.rstProduct.prefProductVCode.text,
+                    ProducerClientRegId=producerClientRegId,
+                    ProducerINN=producerINN,
+                    ProducerKPP=producerKPP,
+                    ProducerFullName=producerFullName,
+                    ProducerShortName=producerShortName,
+                    addressCountry=addressCountry,
+                    addressRegionCode=addressRegionCode,
+                    addressdescription=addressdescription,
                 )
             )
         self.connector = connector
@@ -42,4 +60,4 @@ class ShopRest(Rest):
         return True
 
     def __str__(self):
-        pass
+        return f"<{self.RestDate}, [{self.doc_url}]>"
