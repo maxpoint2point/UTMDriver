@@ -12,4 +12,4 @@ class NATTNPosition(Position):
         return str(self.WbRegID)
 
     def resend(self):
-        return Request(self.connector, "TTN", TTN=self.WbRegID)
+        return Request(self.connector, "QueryResendDoc", TTN=self.WbRegID)
