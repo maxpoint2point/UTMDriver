@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ns:Documents Version="1.0" xmlns:ns="http://fsrar.ru/WEGAIS/WB_DOC_SINGLE_01" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:c="http://fsrar.ru/WEGAIS/Common" xmlns:pref="http://fsrar.ru/WEGAIS/ProductRef_v2" xmlns:tts="http://fsrar.ru/WEGAIS/TransferToShop">
+  <ns:Owner>
+    <ns:FSRAR_ID>{{ fsrar }}</ns:FSRAR_ID>
+  </ns:Owner>
+  <ns:Document>
+    <ns:TransferToShop>
+      <tts:Identity>1/1</tts:Identity>
+      <tts:Header>
+        <tts:TransferNumber>{{ number }}</tts:TransferNumber>
+        <tts:TransferDate>{{ date }}</tts:TransferDate>
+      </tts:Header>
+      <tts:Content>
+          {% for position in positions %}
+        <tts:Position>
+          <tts:Identity>{{ loop.index }}</tts:Identity>
+          <tts:ProductCode>{{ position.product_code }}</tts:ProductCode>
+          <tts:Quantity>{{ position.quantity }}</tts:Quantity>
+          <tts:InformF2>
+            <pref:F2RegId>{{ position.f2 }}</pref:F2RegId>
+          </tts:InformF2>
+        </tts:Position>
+          {% endfor %}
+      </tts:Content>
+    </ns:TransferToShop>
+  </ns:Document>
+</ns:Documents>

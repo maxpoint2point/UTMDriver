@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns:Documents Version="1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns="http://fsrar.ru/WEGAIS/WB_DOC_SINGLE_01" xmlns:pref="http://fsrar.ru/WEGAIS/ProductRef_v2" xmlns:oref="http://fsrar.ru/WEGAIS/ClientRef_v2" xmlns:awr="http://fsrar.ru/WEGAIS/ActWriteOffShop_v2" xmlns:ce="http://fsrar.ru/WEGAIS/CommonEnum">
+  <ns:Owner>
+    <ns:FSRAR_ID>{{fsrar}}</ns:FSRAR_ID>
+  </ns:Owner>
+  <ns:Document>
+    <ns:ActWriteOffShop_v2>
+      <awr:Identity>#GUID#</awr:Identity>
+      <awr:Header>
+		<awr:ActNumber>{{number}}</awr:ActNumber>
+		<awr:ActDate>{{date}}</awr:ActDate>
+		<awr:TypeWriteOff>{{reason}}</awr:TypeWriteOff>
+		<awr:Note>#</awr:Note>
+	</awr:Header>
+      <awr:Content>
+        {% for position in positions -%}
+        <awr:Position>
+          <awr:Identity>{{loop.index}}</awr:Identity>
+          <awr:Product>
+            <pref:UnitType>{{position.unit_type}}</pref:UnitType>
+            <pref:FullName>{{position.full_name}}</pref:FullName>
+            <pref:ShortName/>
+            <pref:AlcCode>{{position.alc_code}}</pref:AlcCode>
+            {% if position.capacity %}
+            <pref:Capacity>{{position.capacity}}</pref:Capacity>
+            {% endif %}
+            <pref:ProductVCode>{{position.v_code}}</pref:ProductVCode>
+            <pref:Producer>
+              {% if position.Producer_inn %}
+              <oref:UL>
+                <oref:ClientRegId>{{position.Producer_regId}}</oref:ClientRegId>
+                <oref:FullName>{{position.Producer_fullName}}</oref:FullName>
+                <oref:ShortName>{{position.Producer_shortName}}</oref:ShortName>
+                <oref:INN>{{position.Producer_inn}}</oref:INN>
+                <oref:KPP>{{position.Producer_kpp}}</oref:KPP>
+                <oref:address>
+                  <oref:Country>{{position.country}}</oref:Country>
+                  <oref:RegionCode>{{position.region}}</oref:RegionCode>
+                  <oref:description>{{position.address}}</oref:description>
+                </oref:address>
+              </oref:UL>
+              {% else %}
+              <oref:FO>
+                <oref:ClientRegId>{{position.Producer_regId}}</oref:ClientRegId>
+                <oref:FullName>{{position.Producer_fullName}}</oref:FullName>
+                <oref:ShortName>{{position.Producer_shortName}}</oref:ShortName>
+                <oref:address>
+                  <oref:Country>{{position.country}}</oref:Country>
+                  <oref:description>{{position.address}}</oref:description>
+                </oref:address>
+              </oref:FO>
+              {% endif %}
+            </pref:Producer>
+          </awr:Product>
+          <awr:Quantity>{{position.quantity}}</awr:Quantity>
+        </awr:Position>
+        {% endfor -%}
+      </awr:Content>
+    </ns:ActWriteOffShop_v2>
+  </ns:Document>
+</ns:Documents>

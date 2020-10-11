@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns:Documents Version="1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns="http://fsrar.ru/WEGAIS/WB_DOC_SINGLE_01" xmlns:pref="http://fsrar.ru/WEGAIS/ProductRef_v2" xmlns:oref="http://fsrar.ru/WEGAIS/ClientRef_v2" xmlns:awr="http://fsrar.ru/WEGAIS/ActWriteOffShop_v2" xmlns:ce="http://fsrar.ru/WEGAIS/CommonEnum">
+  <ns:Owner>
+    <ns:FSRAR_ID>#FSRAR_ID#</ns:FSRAR_ID>
+  </ns:Owner>
+  <ns:Document>
+    <ns:ActWriteOffShop_v2>
+      <awr:Identity>{test}</awr:Identity>
+      <awr:Header>
+		<awr:ActNumber>#</awr:ActNumber>
+		<awr:ActDate>#DATE_TIRE#</awr:ActDate>
+		<awr:TypeWriteOff>Реализация</awr:TypeWriteOff>
+		<awr:Note>#</awr:Note>
+	</awr:Header>
+      <awr:Content>
+        <awr:Position>
+          <awr:Identity>1</awr:Identity>
+          <awr:Product>
+            <pref:UnitType>Packed</pref:UnitType>
+            <pref:Type>АП</pref:Type>
+            <pref:FullName>##.</pref:FullName>
+            <pref:ShortName />
+            <pref:AlcCode>##</pref:AlcCode>
+            <pref:Capacity>1.000</pref:Capacity>
+            <pref:ProductVCode>АП</pref:ProductVCode>
+            <pref:Producer>
+              <oref:UL>
+                <oref:ClientRegId>#ClientRegID#</oref:ClientRegId>
+                <oref:FullName>#oref:FullName#</oref:FullName>
+                <oref:ShortName>#orefShortName#</oref:ShortName>
+                <oref:INN>#INN#</oref:INN>
+                <oref:KPP>#KPP#</oref:KPP>
+                <oref:address>
+                  <oref:Country>#</oref:Country>
+                  <oref:RegionCode>#</oref:RegionCode>
+                  <oref:description>адрес</oref:description>
+                </oref:address>
+              </oref:UL>
+            </pref:Producer>
+          </awr:Product>
+          <awr:Quantity>#</awr:Quantity>
+        </awr:Position>
+      </awr:Content>
+    </ns:ActWriteOffShop_v2>
+  </ns:Document>
+</ns:Documents>

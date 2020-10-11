@@ -63,3 +63,6 @@ class ShopRest(Rest):
 
     def __str__(self):
         return f"<{self.RestDate}, [{self.doc_url}]>"
+
+    def write_off(self):
+        pass
