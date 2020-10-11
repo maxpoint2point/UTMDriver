@@ -174,3 +174,8 @@ class Connector:
 
     def request_document(self, doc_type, **kwargs):
         return DocRequest.Request(self, doc_type, **kwargs)
+
+    def clearUTM(self):
+        for document in self.getAll():
+            requests.delete(document.doc_url)
+        return True
