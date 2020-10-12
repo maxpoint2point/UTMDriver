@@ -1,4 +1,5 @@
-import html
+#  Copyright (c) maxpoint2point@gmail.com 2020.
+
 from generic.exceptions import EmptyResponse
 from generic.helpers.textTransform import getType, clean, unescape
 from generic.queries.utm import requests
@@ -50,6 +51,12 @@ class Connector:
         if doc_type == 'WayBill_v3':
             from generic.documents.waybill import waybill_v3
             return waybill_v3.WayBill_v3(self, xml_data, full_url)
+        if doc_type == 'TTNHISTORYF2REG':
+            from generic.documents.waybill import ttnHistoryF2Reg
+            return ttnHistoryF2Reg.TTNHistoryF2Reg(self, xml_data, full_url)
+        if doc_type == 'FORM2REGINFO':
+            from generic.documents.waybill import form2reginfo
+            return form2reginfo.Form2RegInfo(self, xml_data, full_url)
 
     def getInByUrl(self, url):
         if url[0:7] == "http://":

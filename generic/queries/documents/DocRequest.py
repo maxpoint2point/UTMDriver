@@ -1,3 +1,5 @@
+#  Copyright (c) maxpoint2point@gmail.com 2020.
+
 from generic.queries.utm import requests
 from generic.helpers.textTransform import clean
 from lxml import objectify as ob

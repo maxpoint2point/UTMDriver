@@ -43,14 +43,14 @@ class WayBill_v3(waybill.WayBill):
         self.TRAN_LOADPOINT = xml_data.nsDocument.nsWayBill_v3.wbHeader.wbTransport.wbTRAN_LOADPOINT.text
         self.TRAN_UNLOADPOINT = xml_data.nsDocument.nsWayBill_v3.wbHeader.wbTransport.wbTRAN_UNLOADPOINT.text
         self.TRAN_FORWARDER = xml_data.nsDocument.nsWayBill_v3.wbHeader.wbTransport.wbTRAN_FORWARDER.text
-        self.Base = xml_data.nsDocument.nsWayBill_v3.wbHeader.wbBase.text
-        self.Note = xml_data.nsDocument.nsWayBill_v3.wbHeader.wbNote.text
+        self.Base = str(getattr(xml_data.nsDocument.nsWayBill_v3.wbHeader, 'wbBase', ''))
+        self.Note = str(getattr(xml_data.nsDocument.nsWayBill_v3.wbHeader, 'wbNote', ''))
 
         for goods in xml_data.nsDocument.nsWayBill_v3.wbContent.wbPosition:
             self.Position.append(
                 Position(
                     "WayBill_v3",
-                    Identity=goods.wbIdentity.text,
+                    Identity=int(goods.wbIdentity.text),
                     Type=goods.wbProduct.prefType.text,
                     FullName=goods.wbProduct.prefFullName.text,
                     AlcCode=goods.wbProduct.prefAlcCode.text,
