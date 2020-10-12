@@ -123,32 +123,35 @@ class Connector:
 
     @property
     def gost_cert(self):
-        full_url = f"{self.base_url}/info/certificate/GOST"
-        r = requests.get(full_url)
-        r = html.unescape(r.text)
-        cert = []
-        for line in r.split('\n'):
-            if 'Subject:' in line:
-                string = line[11:].split(", ")
-                for s in string:
-                    cert.append(s.split("=")[1])
-            if 'Validity:' in line:
-                cert.append(line[19:-1])
-            if 'To:' in line:
-                cert.append(line[19:-1])
-        return certificate.Certificate(
-            cert='GOST',
-            cn=cert[0],
-            surname=cert[1],
-            givenname=cert[2],
-            c=cert[3],
-            st=cert[4],
-            l=cert[5],
-            street=cert[6],
-            emailaddress=cert[9],
-            valid_from=cert[11],
-            valid_to=cert[12]
-        )
+        try:
+            full_url = f"{self.base_url}/info/certificate/GOST"
+            r = requests.get(full_url)
+            r = html.unescape(r.text)
+            cert = []
+            for line in r.split('\n'):
+                if 'Subject:' in line:
+                    string = line[11:].split(", ")
+                    for s in string:
+                        cert.append(s.split("=")[1])
+                if 'Validity:' in line:
+                    cert.append(line[19:-1])
+                if 'To:' in line:
+                    cert.append(line[19:-1])
+            return certificate.Certificate(
+                cert='GOST',
+                cn=cert[0],
+                surname=cert[1],
+                givenname=cert[2],
+                c=cert[3],
+                st=cert[4],
+                l=cert[5],
+                street=cert[6],
+                emailaddress=cert[9],
+                valid_from=cert[11],
+                valid_to=cert[12]
+            )
+        except (IndexError, ValueError):
+            return None
 
     @property
     def rsa_cert(self):
