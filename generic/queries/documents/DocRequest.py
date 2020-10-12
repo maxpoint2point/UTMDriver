@@ -169,6 +169,33 @@ class Request:
             self.sign = xml.sign.text
             self.ok = r.ok
 
+        elif self.doc_type == 'WayBillAct_v3':
+            if not ('number' in kwargs):
+                raise MissingArgument("Missing number")
+            if not ('ttn_id' in kwargs):
+                raise MissingArgument("Missing ttn_id")
+
+            full_url = f"{connector.base_url}/opt/in/WayBillAct_v3"
+            outputText = template.render(
+                fsrar=connector.FSRAR,
+                ttn_id=kwargs['ttn_id'],
+                number=kwargs['number'],
+                date=datetime.now().strftime("%Y-%m-%d")
+            )
+            query = {
+                'xml_file': (
+                    'WayBillAct_v3.xml',
+                    outputText,
+                    'application/xml'
+                )
+            }
+
+            r = requests.post(full_url, query)
+            xml = ob.fromstring(clean(r))
+            self.replyId = xml.url.text
+            self.sign = xml.sign.text
+            self.ok = r.ok
+
         else:
             raise UnsupportedDocument
 
