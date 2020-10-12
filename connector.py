@@ -1,6 +1,6 @@
 import html
 from generic.exceptions import EmptyResponse
-from generic.helpers.textTransform import getType, clean
+from generic.helpers.textTransform import getType, clean, unescape
 from generic.queries.utm import requests
 from generic.documents import certificate
 from generic.queries.documents import DocRequest
@@ -126,7 +126,7 @@ class Connector:
         try:
             full_url = f"{self.base_url}/info/certificate/GOST"
             r = requests.get(full_url)
-            r = html.unescape(r.text)
+            r = unescape(r.text)
             cert = []
             for line in r.split('\n'):
                 if 'Subject:' in line:
@@ -157,7 +157,7 @@ class Connector:
     def rsa_cert(self):
         full_url = f"{self.base_url}/info/certificate/RSA"
         r = requests.get(full_url)
-        r = html.unescape(r.text)
+        r = unescape(r.text)
         cert = []
         for line in r.split('\n'):
             if 'Subject:' in line:

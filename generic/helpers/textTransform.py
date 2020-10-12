@@ -1,4 +1,5 @@
 import re
+import html
 
 
 def clean(raw):
@@ -12,3 +13,7 @@ def clean(raw):
 
 def getType(full_url):
     return re.split(r'/', full_url)[-2]
+
+
+def unescape(text):
+    return html.unescape(text)
