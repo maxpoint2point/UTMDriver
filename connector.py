@@ -58,7 +58,7 @@ class Connector:
             from generic.documents.waybill import form2reginfo
             return form2reginfo.Form2RegInfo(self, xml_data, full_url)
 
-    def getInByUrl(self, url):
+    def getByUrl(self, url):
         if url[0:7] == "http://":
             full_url = url
         else:

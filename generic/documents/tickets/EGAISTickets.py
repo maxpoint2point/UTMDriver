@@ -17,10 +17,16 @@ class EGAISTicket(Ticket):
         self.DocType = xml_data.nsDocument.nsTicket.tcDocType.text
         self.OperationName = xml_data.nsDocument.nsTicket.tcOperationResult.tcOperationName.text
         self.OperationResult = xml_data.nsDocument.nsTicket.tcOperationResult.tcOperationResult.text
-        self.OperationDate = datetime.datetime.strptime(
-            xml_data.nsDocument.nsTicket.tcOperationResult.tcOperationDate.text,
-            '%Y-%m-%dT%H:%M:%S.%f'
-        )
+        try:
+            self.OperationDate = datetime.datetime.strptime(
+                xml_data.nsDocument.nsTicket.tcOperationResult.tcOperationDate.text,
+                '%Y-%m-%dT%H:%M:%S.%f'
+            )
+        except ValueError:
+            self.OperationDate = datetime.datetime.strptime(
+                xml_data.nsDocument.nsTicket.tcOperationResult.tcOperationDate.text,
+                '%Y-%m-%dT%H:%M:%S'
+            )
         self.OperationComment: str = xml_data.nsDocument.nsTicket.tcOperationResult.tcOperationComment.text
         self.connector = connector
         self.doc_url = doc_url

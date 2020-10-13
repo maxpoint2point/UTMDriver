@@ -36,13 +36,13 @@ class WayBill_v3(waybill.WayBill):
         self.ConsigneeCountry = xml_data.nsDocument.nsWayBill_v3.wbHeader.wbConsignee.orefFL.orefaddress.orefCountry.text
         self.ConsigneeRegionCode = xml_data.nsDocument.nsWayBill_v3.wbHeader.wbConsignee.orefFL.orefaddress.orefRegionCode.text
         self.ConsigneeDescription = xml_data.nsDocument.nsWayBill_v3.wbHeader.wbConsignee.orefFL.orefaddress.orefdescription.text
-        self.TRAN_TYPE = xml_data.nsDocument.nsWayBill_v3.wbHeader.wbTransport.wbTRAN_TYPE.text
-        self.TRAN_COMPANY = xml_data.nsDocument.nsWayBill_v3.wbHeader.wbTransport.wbTRAN_COMPANY.text
+        self.TRAN_TYPE = str(getattr(xml_data.nsDocument.nsWayBill_v3.wbHeader.wbTransport, 'wbTRAN_TYPE', ''))
+        self.TRAN_COMPANY = str(getattr(xml_data.nsDocument.nsWayBill_v3.wbHeader.wbTransport, 'wbTRAN_COMPANY', ''))
         self.TRAN_CAR = xml_data.nsDocument.nsWayBill_v3.wbHeader.wbTransport.wbTRAN_CAR.text
         self.TRAN_DRIVER = xml_data.nsDocument.nsWayBill_v3.wbHeader.wbTransport.wbTRAN_DRIVER.text
         self.TRAN_LOADPOINT = xml_data.nsDocument.nsWayBill_v3.wbHeader.wbTransport.wbTRAN_LOADPOINT.text
         self.TRAN_UNLOADPOINT = xml_data.nsDocument.nsWayBill_v3.wbHeader.wbTransport.wbTRAN_UNLOADPOINT.text
-        self.TRAN_FORWARDER = xml_data.nsDocument.nsWayBill_v3.wbHeader.wbTransport.wbTRAN_FORWARDER.text
+        self.TRAN_FORWARDER = str(getattr(xml_data.nsDocument.nsWayBill_v3.wbHeader.wbTransport, 'wbTRAN_FORWARDER', ''))
         self.Base = str(getattr(xml_data.nsDocument.nsWayBill_v3.wbHeader, 'wbBase', ''))
         self.Note = str(getattr(xml_data.nsDocument.nsWayBill_v3.wbHeader, 'wbNote', ''))
 
@@ -54,7 +54,7 @@ class WayBill_v3(waybill.WayBill):
                     Type=goods.wbProduct.prefType.text,
                     FullName=goods.wbProduct.prefFullName.text,
                     AlcCode=goods.wbProduct.prefAlcCode.text,
-                    Capacity=float(goods.wbProduct.prefCapacity.text),
+                    Capacity=float(getattr(goods.wbProduct, 'prefCapacity', 0)),
                     UnitType=goods.wbProduct.prefUnitType.text,
                     AlcVolume=float(goods.wbProduct.prefAlcVolume.text),
                     ProductVCode=goods.wbProduct.prefProductVCode.text,
