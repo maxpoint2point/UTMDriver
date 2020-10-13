@@ -1,3 +1,5 @@
+#  Copyright (c) maxpoint2point@gmail.com 2020.
+
 from generic.documents.waybill import waybill
 import datetime
 from generic.helpers.positions import Position

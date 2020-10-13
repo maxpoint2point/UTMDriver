@@ -1,3 +1,5 @@
+#  Copyright (c) maxpoint2point@gmail.com 2020.
+
 from generic.helpers.positions import Position
 from generic.queries.documents.DocRequest import Request
 

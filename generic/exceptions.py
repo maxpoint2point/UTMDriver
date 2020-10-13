@@ -1,3 +1,5 @@
+#  Copyright (c) maxpoint2point@gmail.com 2020.
+
 class UTMNotConnect(Exception):
     """Нет соединения к УТМ"""
     pass

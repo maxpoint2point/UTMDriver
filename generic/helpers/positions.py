@@ -1,3 +1,5 @@
+#  Copyright (c) maxpoint2point@gmail.com 2020.
+
 class Position:
     def __init__(self, PositionType, **kwargs):
         self.type = PositionType

@@ -1,3 +1,5 @@
+#  Copyright (c) maxpoint2point@gmail.com 2020.
+
 from generic.documents.rests.rest import Rest
 from generic.helpers.positions import Position
 import datetime
