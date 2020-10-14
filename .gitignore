@@ -4,3 +4,5 @@ main.py
 /__pycache__
 /.none
 *__pycache__
+/dist/
+/UTMDriver.egg-info/
