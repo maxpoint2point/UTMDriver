@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  ~ Copyright (c) maxpoint2point@gmail.com 2020.
-  -->
-
 <ns:Documents Version="1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns= "http://fsrar.ru/WEGAIS/WB_DOC_SINGLE_01" xmlns:wa= "http://fsrar.ru/WEGAIS/ActTTNSingle_v3" xmlns:ce="http://fsrar.ru/WEGAIS/CommonV3">
 <ns:Owner>
 	<ns:FSRAR_ID>{{fsrar}}</ns:FSRAR_ID>

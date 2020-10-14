@@ -2,8 +2,8 @@
 
 import datetime
 
-from generic.documents.NATTN.Position import NATTNPosition
-from generic.queries.utm import requests
+from UTMDriver.generic.documents.NATTN.Position import NATTNPosition
+from UTMDriver.generic.queries.utm import requests
 
 
 class ReplyNATTN:

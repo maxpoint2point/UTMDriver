@@ -1,10 +1,10 @@
 #  Copyright (c) maxpoint2point@gmail.com 2020.
 
-from generic.exceptions import EmptyResponse
-from generic.helpers.textTransform import getType, clean, unescape
-from generic.queries.utm import requests
-from generic.documents import certificate
-from generic.queries.documents import DocRequest
+from .generic.exceptions import EmptyResponse
+from .generic.helpers.textTransform import getType, clean, unescape
+from .generic.queries.utm import requests
+from .generic.documents import certificate
+from .generic.queries.documents import DocRequest
 
 
 class Connector:
@@ -34,28 +34,28 @@ class Connector:
         # TODO: Реализовать нормальный выбор типа документа
         if doc_type == 'Ticket':
             if hasattr(xml_data.nsDocument.nsTicket, 'tcOperationResult'):
-                from generic.documents.tickets import EGAISTickets
+                from UTMDriver.generic.documents.tickets import EGAISTickets
                 return EGAISTickets.EGAISTicket(self, xml_data, full_url)
             else:
-                from generic.documents.tickets import UTMTickets
+                from UTMDriver.generic.documents.tickets import UTMTickets
                 return UTMTickets.UTMTicket(self, xml_data, full_url)
         if doc_type == 'ReplyRests':
-            from generic.documents.rests import storeRest
+            from UTMDriver.generic.documents.rests import storeRest
             return storeRest.StoreRest(self, xml_data, full_url)
         if doc_type == 'ReplyRestsShop_v2':
-            from generic.documents.rests import shopRest
+            from UTMDriver.generic.documents.rests import shopRest
             return shopRest.ShopRest(self, xml_data, full_url)
         if doc_type == 'ReplyNATTN':
-            from generic.documents.NATTN import NATTN
+            from UTMDriver.generic.documents.NATTN import NATTN
             return NATTN.ReplyNATTN(self, xml_data, full_url)
         if doc_type == 'WayBill_v3':
-            from generic.documents.waybill import waybill_v3
+            from UTMDriver.generic.documents.waybill import waybill_v3
             return waybill_v3.WayBill_v3(self, xml_data, full_url)
         if doc_type == 'TTNHISTORYF2REG':
-            from generic.documents.waybill import ttnHistoryF2Reg
+            from UTMDriver.generic.documents.waybill import ttnHistoryF2Reg
             return ttnHistoryF2Reg.TTNHistoryF2Reg(self, xml_data, full_url)
         if doc_type == 'FORM2REGINFO':
-            from generic.documents.waybill import form2reginfo
+            from UTMDriver.generic.documents.waybill import form2reginfo
             return form2reginfo.Form2RegInfo(self, xml_data, full_url)
 
     def getByUrl(self, url):

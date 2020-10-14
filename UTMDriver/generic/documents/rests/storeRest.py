@@ -1,9 +1,9 @@
 #  Copyright (c) maxpoint2point@gmail.com 2020.
 
-from generic.documents.rests.rest import Rest
-from generic.helpers.positions import Position
+from UTMDriver.generic.documents.rests.rest import Rest
+from UTMDriver.generic.helpers.positions import Position
 import datetime
-from generic.queries.utm import requests
+from UTMDriver.generic.queries.utm import requests
 
 
 class StoreRest(Rest):
