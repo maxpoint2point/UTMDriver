@@ -1,7 +1,7 @@
 #  Copyright (c) maxpoint2point@gmail.com 2020.
 
 import requests
-from generic.exceptions import UTMNotConnect, DocumentNotFound
+from UTMDriver.generic.exceptions import UTMNotConnect, DocumentNotFound
 
 
 def get(url):

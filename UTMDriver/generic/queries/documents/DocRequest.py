@@ -1,9 +1,9 @@
 #  Copyright (c) maxpoint2point@gmail.com 2020.
 
-from generic.queries.utm import requests
-from generic.helpers.textTransform import clean
+from UTMDriver.generic.queries.utm import requests
+from UTMDriver.generic.helpers.textTransform import clean
 from lxml import objectify as ob
-from generic.exceptions import UnsupportedDocument, MissingArgument, TypeMismatch
+from UTMDriver.generic.exceptions import UnsupportedDocument, MissingArgument, TypeMismatch
 from datetime import datetime
 import jinja2
 
@@ -17,7 +17,7 @@ class Request:
     def __init__(self, connector, doc_type, **kwargs):
         self.doc_type = doc_type
 
-        templateLoader = jinja2.FileSystemLoader(searchpath="generic/queries/documents/templates/")
+        templateLoader = jinja2.FileSystemLoader(searchpath="UTMDriver/generic/queries/documents/templates/")
         templateEnv = jinja2.Environment(loader=templateLoader, autoescape=True)
         template = templateEnv.get_template(f'{doc_type}.xml')
 
