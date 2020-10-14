@@ -49,24 +49,24 @@ utm.getByReplyId('7002e49c-5f63-4fdc-8bc7-5a6f8dcda041')
 ```
 utm.request_document('ActWriteOfShop_v2', positions=positions, number=4, reason='Иные цели')
 ```
-где переменная позиции может быть списком словарей, содержащие обязательные ключи:
+где переменная позиции может быть списком словарей, содержащий обязательные ключи:
 ```
 positions = {
-            'full_name': pos.ProductFullName,
-            'alc_code': pos.ProductAlcCode,
-            'capacity': pos.ProductCapacity,
-            'unit_type': pos.ProductUnitType,
-            'alc_volume': pos.ProductAlcVolume,
-            'v_code': pos.ProductVCode,
-            'Producer_regId': pos.ProducerClientRegId,
-            'Producer_inn': pos.ProducerINN,
-            'Producer_kpp': pos.ProducerKPP,
-            'Producer_fullName': pos.ProducerFullName,
-            'Producer_shortName': pos.ProducerShortName,
-            'country': pos.addressCountry,
-            'region': pos.addressRegionCode,
-            'address': pos.addressdescription,
-            'quantity': pos.ShopPositionQuantity,
+            'full_name': 'Напиток "Blanche biere Пшеничное Белое" ("Бланш Бир Пшеничное Белое")',
+            'alc_code': '0000000000031584366',
+            'capacity': 0,
+            'unit_type': '',
+            'alc_volume': 4.8,
+            'v_code': 520,
+            'Producer_regId': '030000000042',
+            'Producer_inn': '7802849641',
+            'Producer_kpp': '366543001',
+            'Producer_fullName': 'ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ "ПИВОВАРЕННАЯ КОМПАНИЯ "БАЛТИКА"',
+            'Producer_shortName': 'ООО "ПИВОВАРЕННАЯ КОМПАНИЯ "БАЛТИКА"',
+            'country': 643,
+            'region': 36,
+            'address': '394019, РОССИЯ, , , Г ВОРОНЕЖ, , УЛ 9 ЯНВАРЯ, 109, ,',
+            'quantity': 20,
         }
 ```
 Полное описание API Будет в документации
