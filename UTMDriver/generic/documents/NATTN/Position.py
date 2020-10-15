@@ -2,6 +2,7 @@
 
 from UTMDriver.generic.helpers.positions import Position
 from UTMDriver.generic.queries.documents.DocRequest import Request
+import random
 
 
 class NATTNPosition(Position):
@@ -15,3 +16,6 @@ class NATTNPosition(Position):
 
     def resend(self):
         return Request(self.connector, "QueryResendDoc", TTN=self.WbRegID)
+
+    def accept(self):
+        return Request(self.connector, "WayBillAct_v3", ttn_id=self.WbRegID, number=random.randint(1, 50))
