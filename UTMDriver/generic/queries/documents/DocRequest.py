@@ -1,4 +1,5 @@
 #  Copyright (c) maxpoint2point@gmail.com 2020.
+import os
 
 from UTMDriver.generic.queries.utm import requests
 from UTMDriver.generic.helpers.textTransform import clean
@@ -17,7 +18,8 @@ class Request:
     def __init__(self, connector, doc_type, **kwargs):
         self.doc_type = doc_type
 
-        templateLoader = jinja2.FileSystemLoader(searchpath="UTMDriver/generic/queries/documents/templates/")
+        template_dir = os.path.join(os.path.dirname(__file__), 'templates')
+        templateLoader = jinja2.FileSystemLoader(searchpath=template_dir)
         templateEnv = jinja2.Environment(loader=templateLoader, autoescape=True)
         template = templateEnv.get_template(f'{doc_type}.xml')
 

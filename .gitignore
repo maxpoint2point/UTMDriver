@@ -7,3 +7,4 @@ main.py
 /dist
 /UTMDriver.egg-info
 setup.py
+setup.cfg

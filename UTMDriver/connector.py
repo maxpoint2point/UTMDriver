@@ -1,6 +1,5 @@
 #  Copyright (c) maxpoint2point@gmail.com 2020.
 
-from .generic.exceptions import EmptyResponse
 from .generic.helpers.textTransform import getType, clean, unescape
 from .generic.queries.utm import requests
 from .generic.documents import certificate
@@ -70,9 +69,9 @@ class Connector:
     def getByReplyId(self, replyId):
         full_url = f"{self.base_url}/opt/out?replyId={replyId}"
         xml_data = self.__getXmlData(full_url)
-        if not hasattr(xml_data, 'url'):
-            raise EmptyResponse
         obj = []
+        if not hasattr(xml_data, 'url'):
+            return obj
         for doc in xml_data.url:
             d = self.__getXmlData(doc)
             obj.append(
@@ -83,9 +82,9 @@ class Connector:
     def getByType(self, doc_type):
         full_url = f"{self.base_url}/opt/out/{doc_type}"
         xml_data = self.__getXmlData(full_url)
-        if not hasattr(xml_data, 'url'):
-            raise EmptyResponse
         obj = []
+        if not hasattr(xml_data, 'url'):
+            return obj
         for doc in xml_data.url:
             d = self.__getXmlData(doc)
             obj.append(
@@ -96,9 +95,9 @@ class Connector:
     def getAll(self):
         full_url = f"{self.base_url}/opt/out"
         xml_data = self.__getXmlData(full_url)
-        if not hasattr(xml_data, 'url'):
-            raise EmptyResponse
         obj = []
+        if not hasattr(xml_data, 'url'):
+            return obj
         for doc in xml_data.url:
             d = self.__getXmlData(doc)
             obj.append(
