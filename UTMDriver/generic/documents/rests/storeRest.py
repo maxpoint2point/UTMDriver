@@ -49,5 +49,8 @@ class StoreRest(Rest):
     def push(self):
         pass
 
+    def write_of(self):
+        pass
+
     def __str__(self):
         return f"<{self.RestDate}, [{self.doc_url}]>"
