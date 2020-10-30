@@ -1,10 +1,10 @@
 #  Copyright (c) maxpoint2point@gmail.com 2020.
 import os
 
-from UTMDriver.generic.queries.utm import requests
-from UTMDriver.generic.helpers.textTransform import clean
+from ....generic.queries.utm import requests
+from ....generic.helpers.textTransform import clean
 from lxml import objectify as ob
-from UTMDriver.generic.exceptions import UnsupportedDocument, MissingArgument, TypeMismatch
+from ....generic.exceptions import UnsupportedDocument, MissingArgument, TypeMismatch
 from datetime import datetime
 import jinja2
 

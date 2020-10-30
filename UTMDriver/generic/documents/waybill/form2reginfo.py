@@ -1,6 +1,6 @@
 #  Copyright (c) maxpoint2point@gmail.com 2020.
 import datetime
-from UTMDriver.generic.helpers.positions import Position
+from ....generic.helpers.positions import Position
 
 
 class Form2RegInfo:

@@ -1,8 +1,8 @@
 #  Copyright (c) maxpoint2point@gmail.com 2020.
 
-from UTMDriver.generic.documents.tickets.Ticket import Ticket
+from ....generic.documents.tickets.Ticket import Ticket
 import datetime
-from UTMDriver.generic.queries.utm import requests
+from ....generic.queries.utm import requests
 
 
 class UTMTicket(Ticket):

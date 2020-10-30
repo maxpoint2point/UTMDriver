@@ -1,8 +1,8 @@
 #  Copyright (c) maxpoint2point@gmail.com 2020.
 
-from UTMDriver.generic.documents.waybill import waybill
+from ....generic.documents.waybill import waybill
 import datetime
-from UTMDriver.generic.helpers.positions import Position
+from ....generic.helpers.positions import Position
 
 
 class WayBill_v3(waybill.WayBill):
