@@ -16,8 +16,7 @@ class ReplyNATTN:
         self.connector = connector
         self.doc_url = doc_url
         self.Consignee = xml_data.nsDocument.nsReplyNoAnswerTTN.ttnConsignee
-
-        for ttn in xml_data.nsDocument.nsReplyNoAnswerTTN.ttnttnlist.ttnNoAnswer:
+        for ttn in getattr(xml_data.nsDocument.nsReplyNoAnswerTTN.ttnttnlist, "ttnNoAnswer", []):
             self.Position.append(
                 NATTNPosition(
                     self.connector,
