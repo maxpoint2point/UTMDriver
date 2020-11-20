@@ -9,10 +9,16 @@ from ....generic.queries.utm import requests
 class StoreRest(Rest):
     def __init__(self, connector, xml_data, doc_url):
         self.Position = []
-        self.RestDate = datetime.datetime.strptime(
-            xml_data.nsDocument.nsReplyRests.rstRestsDate.text,
-            "%Y-%m-%dT%H:%M:%S.%f"
-        )
+        try:
+            self.RestDate = datetime.datetime.strptime(
+                xml_data.nsDocument.nsReplyRests.rstRestsDate.text,
+                "%Y-%m-%dT%H:%M:%S.%f"
+            )
+        except ValueError:
+            self.RestDate = datetime.datetime.strptime(
+                xml_data.nsDocument.nsReplyRestsShop_v2.rstRestsDate.text,
+                "%Y-%m-%dT%H:%M:%S"
+            )
         if hasattr(xml_data.nsDocument.nsReplyRests.rstProducts, 'rstStockPosition'):
             for good in xml_data.nsDocument.nsReplyRests.rstProducts.rstStockPosition:
                 self.Position.append(
