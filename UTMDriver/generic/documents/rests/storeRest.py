@@ -18,9 +18,9 @@ class StoreRest(Rest):
                 self.Position.append(
                     Position(
                         'StoreRest',
-                        StockPositionQuantity=good.rstQuantity.text,
-                        StockPositionInformARegId=good.rstInformARegId.text,
-                        StockPositionInformBRegId=good.rstInformBRegId.text,
+                        PositionQuantity=good.rstQuantity.text,
+                        InformARegId=good.rstInformARegId.text,
+                        InformBRegId=good.rstInformBRegId.text,
                         ProductFullName=good.rstProduct.prefFullName.text,
                         ProductAlcCode=good.rstProduct.prefAlcCode.text,
                         ProductCapacity=float(getattr(good.rstProduct, 'prefCapacity', 0)),

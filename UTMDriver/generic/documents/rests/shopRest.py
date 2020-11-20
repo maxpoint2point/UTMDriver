@@ -36,7 +36,7 @@ class ShopRest(Rest):
                 self.Position.append(
                     Position(
                         'ShopRests_v2',
-                        ShopPositionQuantity=good.rstQuantity.text,
+                        PositionQuantity=good.rstQuantity.text,
                         ProductFullName=good.rstProduct.prefFullName.text,
                         ProductAlcCode=good.rstProduct.prefAlcCode.text,
                         ProductCapacity=float(getattr(good.rstProduct, 'prefCapacity', 0)),
@@ -50,7 +50,7 @@ class ShopRest(Rest):
                         ProducerShortName=producerShortName,
                         addressCountry=addressCountry,
                         addressRegionCode=addressRegionCode,
-                        addressdescription=addressdescription,
+                        addressDescription=addressdescription,
                     )
                 )
         self.connector = connector
